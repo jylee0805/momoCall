@@ -31,7 +31,7 @@ function Order({ addMessage, shopId }) {
 
 Order.propTypes = {
   addMessage: PropTypes.func.isRequired,
-  shopId: PropTypes.string,
+  shopId: PropTypes.string.isRequired,
 };
 
 export default Order;

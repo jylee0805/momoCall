@@ -18,7 +18,6 @@ import Choose from "./Choose";
 import Checkout from "./Checkout";
 import Order from "./Order";
 import TypeIn from "./TypeIn";
-import { object } from "prop-types";
 
 function Chat() {
   const { labels, handleAnalyzeImage } = useGoogleVisionAPI();
@@ -41,9 +40,7 @@ function Chat() {
         return;
       }
     };
-    if (location.pathname === "/chat") {
-      navigate("/404");
-    }
+
     dispatch({ type: "SET_MESSAGE_SENT", payload: false });
     checkParams();
 
