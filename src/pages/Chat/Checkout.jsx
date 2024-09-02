@@ -7,7 +7,7 @@ function Checkout({ checkout }) {
   const { renderDispatch } = useContext(ChatDispatchContext);
 
   return (
-    <div className={`${renderState.isPurchase ? "flex" : "hidden"} justify-center items-center w-container h-full fixed top-0`}>
+    <div className={`${renderState.isPurchase ? "flex" : "hidden"} justify-center items-center w-container h-full fixed top-0 z-10`}>
       <div className="w-64 h-84 bg-white mx-auto py-2 px-4 flex flex-col gap-4 text-sm rounded-xl">
         <h4 className="text-center font-bold leading-normal text-lg text-primary-800 mt-2">訂單即將送出</h4>
         <p className="text-center font-bold">已確認品項、數量並進行結帳嗎？</p>

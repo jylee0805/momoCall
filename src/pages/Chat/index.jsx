@@ -23,7 +23,7 @@ import { object } from "prop-types";
 function Chat() {
   const { labels, handleAnalyzeImage } = useGoogleVisionAPI();
   const queryParams = new URLSearchParams(window.location.search);
-  const shopId = queryParams.get("member");
+  const shopId = queryParams.get("member") || "0";
   const orderNumber = queryParams.get("order");
   const productNumber = queryParams.get("product");
 
@@ -35,10 +35,15 @@ function Chat() {
     const checkParams = async () => {
       const chatroomSnapshot = await getDocs(collection(db, "chatroom"));
       const validShopIds = chatroomSnapshot.docs.map((doc) => doc.id);
+
       if (!shopId || !validShopIds.includes(shopId)) {
         navigate("/404");
+        return;
       }
     };
+    if (location.pathname === "/chat") {
+      navigate("/404");
+    }
     dispatch({ type: "SET_MESSAGE_SENT", payload: false });
     checkParams();
 

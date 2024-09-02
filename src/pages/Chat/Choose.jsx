@@ -6,7 +6,7 @@ function Choose() {
   const { dispatch, renderDispatch } = useContext(ChatDispatchContext);
 
   return (
-    <div className={`${renderState.isChoose ? "flex" : "hidden"} justify-center items-center bg-black-800/80 w-container h-full fixed top-0`}>
+    <div className={`${renderState.isChoose ? "flex" : "hidden"} justify-center items-center bg-black-800/80 w-container h-full fixed top-0 z-10`}>
       <div className="w-64 h-60 bg-white mx-auto py-2 px-4 flex flex-col gap-3 text-sm rounded-xl">
         <h4 className="text-center font-bold leading-normal text-base text-primary-800">請選擇規格數量</h4>
         <div className="bg-black-0 p-1 rounded-t-large flex justify-center items-center">
