@@ -66,7 +66,7 @@ function Chat() {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const msgs = [];
       querySnapshot.forEach((doc) => {
-        msgs.push(doc.data());
+        msgs.push({ ...doc.data(), id: doc.id });
       });
 
       dispatch({ type: "SET_MESSAGES", payload: msgs });
@@ -189,7 +189,7 @@ function Chat() {
       content: content,
       created_time: serverTimestamp(),
       from: from,
-      isUsefull: "",
+      isUseful: "",
     });
   };
 

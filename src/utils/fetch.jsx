@@ -93,7 +93,7 @@ export const fetchGPT = async (inputText, document, shopId) => {
         content: data.choices[0].message.content,
         created_time: serverTimestamp(),
         from: "shop",
-        isUsefull: "",
+        isUseful: "",
       });
     } else if (res.status === 429) {
       console.error("Too many requests. Please try again later.");
