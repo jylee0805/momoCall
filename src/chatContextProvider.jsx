@@ -14,6 +14,7 @@ const initialState = {
   dateLabel: "",
   faqs: [],
   messageSent: false,
+  usefulUpdate: false,
 };
 
 function reducer(state, action) {
@@ -52,6 +53,8 @@ function reducer(state, action) {
       return { ...state, faqs: action.payload };
     case "SET_MESSAGE_SENT":
       return { ...state, messageSent: action.payload };
+    case "SET_USEFUL_UPDATE":
+      return { ...state, usefulUpdate: action.payload };
     default:
       return state;
   }

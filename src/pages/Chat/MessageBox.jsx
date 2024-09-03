@@ -42,6 +42,7 @@ function MessageBox({ imageFormats }) {
   };
 
   const updateUseful = async (messageId, isUseful, index) => {
+    dispatch({ type: "SET_USEFUL_UPDATE", payload: true });
     try {
       const messageDoc = doc(db, "chatroom", shopId, "messages", messageId);
       await updateDoc(messageDoc, { isUseful });
@@ -49,6 +50,8 @@ function MessageBox({ imageFormats }) {
       dispatch({ type: "TOGGLE_USEFUL", payload: { index, isUseful: isUseful } });
     } catch (e) {
       console.error("Error updating document: ", e);
+    } finally {
+      dispatch({ type: "SET_USEFUL_UPDATE", payload: false });
     }
   };
 
