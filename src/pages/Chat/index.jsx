@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { ChatContext, ChatDispatchContext } from "../../chatContextProvider";
 import { useNavigate } from "react-router-dom";
 import { db, storage, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, getDocs, ref, uploadBytesResumable, getDownloadURL, where } from "../../utils/firebase";
@@ -30,7 +30,15 @@ function Chat() {
   const { dispatch, renderDispatch, scrollToBottom } = useContext(ChatDispatchContext);
   const navigate = useNavigate();
 
+  const usefulUpdateRef = useRef(state.usefulUpdate);
+
   useEffect(() => {
+    usefulUpdateRef.current = state.usefulUpdate;
+  }, [state.usefulUpdate]);
+
+  useEffect(() => {
+    console.log(state.usefulUpdate);
+
     const checkParams = async () => {
       const chatroomSnapshot = await getDocs(collection(db, "chatroom"));
       const validShopIds = chatroomSnapshot.docs.map((doc) => doc.id);
@@ -66,11 +74,13 @@ function Chat() {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const msgs = [];
       querySnapshot.forEach((doc) => {
-        msgs.push(doc.data());
+        msgs.push({ ...doc.data(), id: doc.id });
       });
 
       dispatch({ type: "SET_MESSAGES", payload: msgs });
-      scrollToBottom();
+      if (!usefulUpdateRef.current) {
+        scrollToBottom();
+      }
     });
 
     const handleScroll = () => {
@@ -98,7 +108,6 @@ function Chat() {
 
   useEffect(() => {
     scrollToBottom();
-
     const sendQAMessage = async () => {
       const queryParams = new URLSearchParams(window.location.search);
       const shopId = queryParams.get("member");
@@ -170,9 +179,7 @@ function Chat() {
           dispatch({ type: "SET_IS_SCROLLING", payload: false });
         }, 900);
       };
-
       window.addEventListener("scroll", handleScroll);
-
       return () => {
         window.removeEventListener("scroll", handleScroll);
       };
@@ -189,7 +196,7 @@ function Chat() {
       content: content,
       created_time: serverTimestamp(),
       from: from,
-      isUsefull: "",
+      isUseful: "",
     });
   };
 

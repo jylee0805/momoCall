@@ -1,6 +1,6 @@
 import { ChatContext, ChatDispatchContext } from "../../chatContextProvider";
 import { useContext } from "react";
-import { db, collection, addDoc, serverTimestamp } from "../../utils/firebase";
+import { db, doc, updateDoc, collection, addDoc, serverTimestamp } from "../../utils/firebase";
 import { AiOutlineLike, AiOutlineDislike, AiFillDislike, AiFillLike } from "react-icons/ai";
 import happy from "../../images/happy.png";
 import { marked } from "marked";
@@ -12,11 +12,11 @@ import responses from "../../pages/responses.json";
 function MessageBox({ imageFormats }) {
   const { state } = useContext(ChatContext);
   const { dispatch, scrollToBottom } = useContext(ChatDispatchContext);
-
+  let regex = new RegExp(`歡迎來到.*！我是你的 AI 小幫手，你可以先從選單了解我們的服務～`);
+  const queryParams = new URLSearchParams(window.location.search);
+  const shopId = queryParams.get("member");
   const handleQAClick = async (pattern) => {
     const responseItem = responses.find((item) => item.pattern === pattern);
-    const queryParams = new URLSearchParams(window.location.search);
-    const shopId = queryParams.get("member");
     const messagesCollectionRef = collection(db, "chatroom", shopId, "messages");
 
     if (responseItem) {
@@ -38,6 +38,20 @@ function MessageBox({ imageFormats }) {
       scrollToBottom();
     } else {
       console.error("未找到相應的回覆");
+    }
+  };
+
+  const updateUseful = async (messageId, isUseful, index) => {
+    dispatch({ type: "SET_USEFUL_UPDATE", payload: true });
+    try {
+      const messageDoc = doc(db, "chatroom", shopId, "messages", messageId);
+      await updateDoc(messageDoc, { isUseful });
+      console.log("Document updated with ID: ", shopId);
+      dispatch({ type: "TOGGLE_USEFUL", payload: { index, isUseful: isUseful } });
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    } finally {
+      dispatch({ type: "SET_USEFUL_UPDATE", payload: false });
     }
   };
 
@@ -79,21 +93,22 @@ function MessageBox({ imageFormats }) {
             </div>
             <div className={`flex items-center gap-2 ${message.from === "user1" ? "" : "ml-12 "}`}>
               <small className="text-xs leading-normal">{message.created_time?.toDate().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) || "Loading..."}</small>
-              <button
-                onClick={() => dispatch({ type: "TOGGLE_USEFUL", payload: { index, isUseful: "Yes" } })}
-                className={`leading-4 ${message.from === "user1" ? "hidden" : state.messages[index].isUseful === "No" ? "hidden" : "inline"}`}
-              >
-                <AiOutlineLike className={`${state.messages[index].isUseful === "Yes" ? "hidden" : "inline"}`} />
-                <AiFillLike className={`${state.messages[index].isUseful == "Yes" ? "inline text-primary" : "hidden"}`} />
-              </button>
-              {!(state.messages[index].isUseful || message.from === "user1") && <div className="border-1 border-black-600 h-4"></div>}
-              <button
-                onClick={() => dispatch({ type: "TOGGLE_USEFUL", payload: { index, isUseful: "No" } })}
-                className={`leading-4 ${message.from === "user1" ? "hidden" : state.messages[index].isUseful === "Yes" ? "hidden" : "inline"}`}
-              >
-                <AiOutlineDislike className={`${state.messages[index].isUseful === "No" ? "hidden" : "inline"}`} />
-                <AiFillDislike className={`${state.messages[index].isUseful == "No" ? "inline text-secondary" : "hidden"}`} />
-              </button>
+
+              {state.messages[index].isUseful !== "No" && message.from === "shop" && !regex.test(message.content) && (
+                <button onClick={() => updateUseful(state.messages[index].id, "Yes", index)} className="leading-4">
+                  <AiOutlineLike className={`${state.messages[index].isUseful === "Yes" ? "hidden" : "inline"}`} />
+                  <AiFillLike className={`${state.messages[index].isUseful == "Yes" ? "inline text-primary" : "hidden"}`} />
+                </button>
+              )}
+
+              {!(state.messages[index].isUseful || message.from === "user1" || regex.test(message.content)) && <div className="border-1 border-black-600 h-4"></div>}
+
+              {state.messages[index].isUseful !== "Yes" && message.from === "shop" && !regex.test(message.content) && (
+                <button onClick={() => updateUseful(state.messages[index].id, "No", index)} className="leading-4">
+                  <AiOutlineDislike className={`${state.messages[index].isUseful === "No" ? "hidden" : "inline"}`} />
+                  <AiFillDislike className={`${state.messages[index].isUseful == "No" ? "inline text-secondary" : "hidden"}`} />
+                </button>
+              )}
             </div>
           </div>
         </div>

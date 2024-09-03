@@ -8,7 +8,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import loading from "../../images/loading.gif";
 import beenEater from "../../images/beenEater.gif";
 
-function ChatSection({ productNumber, imageFormats }) {
+function ChatSection({ productNumber, imageFormats, shopId }) {
   const { renderState } = useContext(ChatContext);
 
   return (
@@ -20,7 +20,7 @@ function ChatSection({ productNumber, imageFormats }) {
 
       <ProductCard productNumber={productNumber} />
 
-      <MessageBox imageFormats={imageFormats} />
+      <MessageBox imageFormats={imageFormats} shopId={shopId} />
 
       <div className={`items-center flex gap-3 ${renderState.isImageLoading ? "flex flex-row-reverse" : renderState.isGPTLoading ? "flex" : "hidden"}`}>
         <img src={happy} alt="" className="w-9 h-9" />
