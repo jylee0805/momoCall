@@ -3,9 +3,11 @@ import { ChatContextProvider } from "./chatContextProvider";
 
 function App() {
   return (
-    <ChatContextProvider>
-      <Outlet />
-    </ChatContextProvider>
+    <div>
+      <ChatContextProvider>
+        <Outlet />
+      </ChatContextProvider>
+    </div>
   );
 }
 

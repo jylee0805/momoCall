@@ -166,7 +166,7 @@ function Console() {
         {state.searchTerm && <FiX className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={clearSearch} />}
       </div>
       <div className="flex-grow overflow-scroll bg-black-200 p-3 rounded-t-lg">
-        <div className="space-y-3">
+        <div className="space-y-5">
           {state.searchTerm && filteredFaqs.length === 0 && <p className="text-black text-base leading-normal text-center">查無相關問答</p>}
           {filteredFaqs.map((faq, index) => (
             <div key={faq.id}>

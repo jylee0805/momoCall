@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background: #020202;
+}
+.scrollbar-hidden-x::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden-x {
+  -ms-overflow-style: none; /* IE 和 Edge */
+  scrollbar-width: none; /* Firefox */
+}
