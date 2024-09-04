@@ -111,7 +111,7 @@ const Search = () => {
             {Array.from({ length: 5 }).map((_, index) => (
               <div key={index} className="w-full py-4 flex items-center border-t border-gray-300">
                 <div className="w-large h-large bg-gray-300 rounded-full"></div>
-                <div className="flex ml-4 flex-col py-2 justify-between w-full">
+                <div className="flex ml-4 flex-col py-2 justify-between w-[265px]">
                   <div className="flex justify-between items-center mb-1">
                     <div className="w-1/2 h-4 bg-gray-300 rounded"></div>
                     <div className="w-1/6 h-4 bg-gray-300 rounded"></div>
@@ -154,7 +154,7 @@ const Search = () => {
 
                       <div className="flex ml-4 flex-col py-2 justify-between w-full">
                         <div className="flex justify-between items-center">
-                          <h2 className="text-base font-bold text-primary leading-normal w-messageContent line-clamp-2">{result.shopName}</h2>
+                          <h2 className="text-base font-bold text-primary leading-normal h-[48px] w-messageContent line-clamp-2">{result.shopName}</h2>
                           <p className="text-xs text-gray-500 leading-normal">
                             {latestMessages[result.id]?.created_time
                               ? new Date(latestMessages[result.id].created_time.seconds * 1000).toLocaleDateString("zh-TW", {
@@ -203,7 +203,7 @@ const Search = () => {
 
                       <div className="flex ml-4 flex-col py-2 justify-between w-full">
                         <div className="flex justify-between items-center">
-                          <h2 className="text-base font-bold text-primary leading-normal w-messageContent line-clamp-2">{result.shopName}</h2>
+                          <h2 className="text-base font-bold text-primary leading-normal h-[48px] w-messageContent line-clamp-2">{result.shopName}</h2>
                           <p className="text-xs text-gray-500 leading-normal">
                             {latestMessages[result.id]?.created_time
                               ? new Date(latestMessages[result.id].created_time.seconds * 1000).toLocaleDateString("zh-TW", {
